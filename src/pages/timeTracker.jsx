@@ -134,23 +134,23 @@ const deleteTask = (id) => {
   method: 'DELETE'})
   .then(setTaskData(tasksData.filter(task => task.id !== id)))
 
+  console.log(tasksData)
   const oldTimeArray = JSON.parse(localStorage.getItem('time'))
-  const index = oldTimeArray.findIndex(item => item.id === id)
-  const newArray = oldTimeArray.splice(index, 1)
-  localStorage.setItem('time', JSON.stringify(newArray))
 
+  const newArray = oldTimeArray.filter(task => task.id !== id) // change this one 
+  localStorage.setItem('time', JSON.stringify(newArray))
 }
 
 
 return (
-<div className="App">
+<div className="timeTracker">
     { tasksData &&
       tasksData.map((data) => (
-        <div key={data.id}>
+        <div className='cardTime' key={data.id}>
           <p>{data.titel}</p>
           {displayTime && displayTime.map((item) => {
               if(item.id === data.id){
-                return <p>{item.time}</p>}
+                return <p key={data.id}>{item.time}</p>}
             })}
           <button disabled={data.active} onClick={() => {play(data.id)}}>Play</button>
           <button 

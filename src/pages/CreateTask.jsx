@@ -14,6 +14,8 @@ export default function CreateTask() {
     const [projectId, setProjectId] = useState('')
     const [titel, setTitel] = useState('')
     const [descri, setDescri] = useState('')
+    const [sendDone, setSendDone] = useState(false)
+
  
     console.log(projectId)
     
@@ -29,8 +31,8 @@ export default function CreateTask() {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(input)
-        })
-
+        }).then(setSendDone("Du sparade tasket utan problem"))
+        .catch(err => { if(err) {setSendDone("Ditt task sparades inte, felkod:", err)}})
     }
 
   return (
@@ -62,6 +64,7 @@ export default function CreateTask() {
             rows="5"></textarea>
             
             <button>Spara</button>
+            <p>{sendDone}</p>
         </form>
     </div>
   )

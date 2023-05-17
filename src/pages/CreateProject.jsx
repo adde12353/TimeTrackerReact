@@ -3,9 +3,10 @@ import { useState } from 'react'
 
 export default function CreateTask() {
     const [titel, setTitel] = useState('')
-    
+    const [sendDone, setSendDone] = useState(false)
     
     function handleSubmit(e) {
+        setSendDone()
         e.preventDefault();
         const input = {
         name: titel,
@@ -15,16 +16,21 @@ export default function CreateTask() {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(input)
+        }).then(
+            setSendDone("Du skickade datan utan problem")
+            ).catch(err => {
+            console.log(err)
+            if(err) {
+                setSendDone("Det gick inte att spara, försök igen")
+            }
         })
 
     }
 
   return (
     <div>
-        <form onSubmit={handleSubmit}
-        className='createForm'>
+        <form onSubmit={handleSubmit} className='createForm'>
             <h3>Skapa ett projekt</h3>
-           
             <input 
             type="text"
             required
@@ -33,7 +39,10 @@ export default function CreateTask() {
             placeholder='Projekt namn'/>
             
             <button>Spara</button>
+            <p>{sendDone}
+            </p>
         </form>
+        
     </div>
   )
 
